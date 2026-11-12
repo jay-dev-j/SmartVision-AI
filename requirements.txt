@@ -7,7 +7,7 @@ numpy==2.5.4
 pandas==3.1.1
 matplotlib==3.11.2
 Pillow==13.0.0
-opencv-python-headless
+opencv-python-headless==4.11.0.86
 plotly
 streamlit-webrtc==0.79.1
 torch==2.15.0+cpu
