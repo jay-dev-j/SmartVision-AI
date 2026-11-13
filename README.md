@@ -1,90 +1,112 @@
 # SmartVision AI
 
-SmartVision AI is a deep learning-based image classification and object detection project developed using a selected 25-class subset of the COCO dataset.
+An end-to-end computer vision application combining **image classification** and **object detection**. It uses four CNN architectures for classification and a custom-trained YOLOv8s model for detecting multiple objects across a selected 25-class COCO subset.
 
-The project uses four CNN architectures for image classification and YOLOv8 for object detection. A Streamlit web application provides an interface to upload images, view predictions, detect objects, and compare model performance.
+## Live Demo
+
+- **Streamlit app:** https://smartvision-ai-jayadev.streamlit.app/
+- **GitHub repository:** https://github.com/jay-dev-j/SmartVision-AI
+- **Google Colab notebook:** [Smartvision_new(10).ipynb](notebooks/Smartvision_new%2810%29.ipynb)
+
+## Application Screenshots
+
+### Home
+![SmartVision AI home page](assets/screenshots/home.png)
+
+### Image Classification
+The uploaded image is evaluated by four trained CNN models. The application displays each model's predicted class and confidence score.
+
+![Image classification upload](assets/screenshots/image_classification_upload.png)
+
+![Image classification results](assets/screenshots/image_classification_results.png)
+
+### Object Detection
+The YOLOv8s model detects multiple objects, draws bounding boxes, and reports class labels and confidence scores. Users can adjust the confidence and IoU thresholds.
+
+![Object detection upload](assets/screenshots/object_detection_upload.png)
+
+![Object detection results](assets/screenshots/object_detection_results.png)
+
+### Model Performance
+The performance page presents classification metrics, model comparisons, training history where available, and YOLO evaluation results.
+
+![Model performance dashboard](assets/screenshots/model_performance.png)
+
+### About
+![About SmartVision AI](assets/screenshots/about.png)
+
+### Real-Time Webcam Detection
+The webcam page uses YOLOv8s to detect objects from a live camera stream.
+
+![Webcam detection](assets/screenshots/webcam_detection.jpg)
 
 ## Features
 
-- Image classification using four CNN models.
-- Top-5 predictions with confidence scores.
-- Object detection using YOLOv8.
-- Bounding boxes with class labels and confidence scores.
-- Adjustable detection confidence and IoU thresholds.
-- Classification model performance comparison.
-- Training and validation performance visualizations.
-- YOLOv8 evaluation visualizations.
-- Model optimization comparison.
-
-## Models Used
-
-### Image Classification
-
-1. VGG16
-2. ResNet50
-3. MobileNetV2
-4. EfficientNetB0
-
-### Object Detection
-
-- YOLOv8
+- Image classification using VGG16, ResNet50, MobileNetV2, and EfficientNetB0.
+- Top-5 classification predictions with confidence scores.
+- YOLOv8s object detection with bounding boxes, class labels, and confidence scores.
+- Adjustable confidence and IoU thresholds.
+- Model-performance comparison and evaluation visualizations.
+- Real-time webcam object detection.
+- Multi-page Streamlit interface.
 
 ## Dataset
 
-The project uses a selected 25-class subset of the COCO dataset.
+The project uses a selected **25-class subset of the COCO dataset**.
 
-- Total images: 5,733 cropped object images
-- Training images: 3,948
-- Validation images: 854
-- Testing images: 931
-- Number of classes: 25
-- Image size: 224 × 224 pixels
+| Dataset split | Images |
+|---|---:|
+| Training | 3,948 |
+| Validation | 854 |
+| Testing | 931 |
+| **Total** | **5,733** |
 
-The classification dataset was prepared by extracting individual objects using their COCO bounding box annotations.
+For classification, individual objects were cropped from COCO images using bounding-box annotations and prepared at 224 × 224 pixels.
 
-## Classification Model Performance
+## Image Classification Results
 
-| Model | Accuracy | Precision | Recall | F1-Score |
+Recorded test-set results from the four-model comparison:
+
+| Model | Accuracy | Macro Precision | Macro Recall | Macro F1-score |
 |---|---:|---:|---:|---:|
 | VGG16 | 54.24% | 52.44% | 40.27% | 43.02% |
-| ResNet50 | 60.69% | 57.53% | 50.28% | 51.29% |
+| ResNet50 | **60.69%** | **57.53%** | **50.28%** | **51.29%** |
 | MobileNetV2 | 56.93% | 57.11% | 46.39% | 48.43% |
 | EfficientNetB0 | 55.96% | 57.31% | 44.98% | 47.39% |
 
 ResNet50 achieved the highest test accuracy and macro F1-score among the four classification models.
 
-## YOLOv8 Performance
+## Object Detection Results
+
+The following metrics are from the YOLOv8s cleaned test-dataset evaluation.
 
 | Metric | Result |
 |---|---:|
 | Precision | 47.50% |
 | Recall | 37.16% |
 | mAP@50 | 36.84% |
-| mAP@50-95 | 22.15% |
+| mAP@50–95 | 22.15% |
 
-These results are from the YOLOv8s cleaned test-dataset evaluation.
+## CPU Model Optimization
 
-## Model Optimization
+The project compared PyTorch, ONNX, and OpenVINO inference formats on CPU.
 
-The following formats were compared for CPU inference:
-
-| Format | Average Inference Time | FPS | Model Size |
+| Format | Average inference time | FPS | Model size |
 |---|---:|---:|---:|
 | PyTorch | 684.21 ms | 1.462 | 21.49 MB |
-| ONNX | 592.48 ms | 1.688 | 42.71 MB |
+| ONNX | **592.48 ms** | **1.688** | 42.71 MB |
 | OpenVINO | 647.78 ms | 1.544 | 42.79 MB |
 
-ONNX achieved the fastest inference time in this benchmark.
+ONNX had the lowest average inference time in this benchmark.
 
 ## Technology Stack
 
 - Python
-- TensorFlow and Keras
+- TensorFlow / Keras
 - PyTorch
 - Ultralytics YOLOv8
 - Streamlit
-- NumPy
-- Pandas
+- NumPy and Pandas
 - OpenCV
 - Matplotlib
 - Pillow
@@ -93,91 +115,66 @@ ONNX achieved the fastest inference time in this benchmark.
 
 ```text
 streamlit_app/
-│
 ├── app.py
-├── requirements.txt
-│
-├── models/
-│   ├── classification/
-│   └── detection/
-│
 ├── pages/
 │   ├── 2_Image_Classification.py
 │   ├── 3_Object_Detection.py
-│   └── 4_Model_Performance.py
-│
+│   ├── 4_Model_Performance.py
+│   ├── 5_About.py
+│   └── 6_Webcam_Detection.py
 ├── utils/
-│   ├── class_names.py
-│   ├── detection.py
-│   ├── image_processor.py
-│   ├── model_loader.py
-│   └── prediction.py
-│
+├── models/
+│   ├── classification/
+│   └── detection/
 ├── assets/
+│   ├── screenshots/
 │   ├── confusion_matrices/
 │   ├── training_history/
 │   └── yolo_evaluation/
-│
-└── test_images/
+├── notebooks/
+├── requirements.txt
+├── packages.txt
+└── README.md
 ```
 
-## Installation
+## Run Locally
 
-Clone the repository:
+1. Clone the repository:
 
-```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
-```
+   ```bash
+   git clone https://github.com/jay-dev-j/SmartVision-AI.git
+   cd SmartVision-AI
+   ```
 
-Navigate to the project directory:
+2. Create and activate a virtual environment:
 
-```bash
-cd streamlit_app
-```
+   ```bash
+   python -m venv venv
+   ```
 
-Create a virtual environment:
+   On Windows:
 
-```bash
-python -m venv venv
-```
+   ```powershell
+   venv\Scripts\activate
+   ```
 
-Activate the environment on Windows:
+3. Install dependencies:
 
-```bash
-venv\Scripts\activate
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-Install dependencies:
+4. Start the application:
 
-```bash
-pip install -r requirements.txt
-```
+   ```bash
+   streamlit run app.py
+   ```
 
-## Run the Application
+## Notes
 
-Start the Streamlit application:
-
-```bash
-streamlit run app.py
-```
-
-The application will open in your browser.
-
-## Application Pages
-
-1. **Home:** Project overview and navigation.
-2. **Image Classification:** Compare predictions from four CNN models.
-3. **Object Detection:** Detect multiple objects using YOLOv8.
-4. **Model Performance:** Explore classification and detection evaluation results.
-
-## Project Objective
-
-The main objective of SmartVision AI is to develop an integrated computer vision application that combines image classification and object detection. It also provides a comparison of different deep learning architectures based on their performance.
-
-## Note
-
-Classification and object detection are separate tasks in this application. The classification models predict the main object in an uploaded image, while YOLOv8 detects multiple objects and their locations.
+- Image classification and object detection are separate workflows. Classification predicts a class for an input image, while YOLOv8 detects and localizes multiple objects.
+- The metrics above are recorded results from the project's experiments. Actual inference performance can vary with the input and runtime environment.
 
 ## Author
 
-Developed as part of an AI and Machine Learning project.
+Developed as an AI and Machine Learning project.
